@@ -48,6 +48,7 @@ static NSMutableDictionary *benchmarkHelpers = nil;
 	if (!benchmarkHelper) {
 		benchmarkHelper = [[self alloc] init];
 		[benchmarkHelpers setObject:benchmarkHelper forKey:hash];
+		[benchmarkHelper release];
 	}
 	return benchmarkHelper;
 }
@@ -56,9 +57,7 @@ static NSMutableDictionary *benchmarkHelpers = nil;
 
 
 - (id)init {
-	[super init];
-	
-	if (self) {
+	if (self = [super init]) {
 		marks = [[NSMutableArray alloc] init];
 	}
 	
@@ -153,14 +152,19 @@ static NSMutableDictionary *benchmarkHelpers = nil;
 @synthesize timestamp;
 
 - (id)initWithTitle:(NSString *)aTitle {
-	[super init];
-	
-	if (self) {
+	if (self = [super init]) {
 		self.title = aTitle;
 		self.timestamp = [NSDate date];
 	}
 	
 	return self;
+}
+
+- (void)dealloc {
+	self.title = nil;
+	self.timestamp = nil;
+	
+	[super dealloc];
 }
 
 @end
